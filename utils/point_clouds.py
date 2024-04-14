@@ -3,9 +3,7 @@
 import copy
 import torch
 import random
-import pygicp
 import numpy as np
-import open3d as o3d
 import utils.config as cfg
 
 
@@ -56,6 +54,7 @@ def apply_transform(pc: torch.Tensor, m: torch.Tensor):
 
 # Make up feature with open3d
 def make_open3d_feature(data, dim, npts):
+    import open3d as o3d
     feature = o3d.pipelines.registration.Feature()
     feature.resize(dim, npts)
     feature.data = data.cpu().numpy().astype('d').transpose()
@@ -64,6 +63,7 @@ def make_open3d_feature(data, dim, npts):
 
 # Make up point cloud with open3d
 def make_open3d_point_cloud(xyz, color=None):
+    import open3d as o3d
     pcd = o3d.geometry.PointCloud()
     pcd.points = o3d.utility.Vector3dVector(xyz)
     if color is not None:
@@ -75,6 +75,7 @@ def draw_pc(pc):
     '''
     pc: np.ndarray
     '''
+    import open3d as o3d
     pc = copy.deepcopy(pc)
     pcd1 = o3d.geometry.PointCloud()
     pcd1.points = o3d.utility.Vector3dVector(pc)    
@@ -91,6 +92,7 @@ def draw_pc_pair(pc1, pc2):
     '''
     pc1 & pc2: np.ndarray
     '''    
+    import open3d as o3d
     pc1 = copy.deepcopy(pc1)
     pc2 = copy.deepcopy(pc2)    
     pcd1 = o3d.geometry.PointCloud()
@@ -111,6 +113,7 @@ def draw_registration_result(source, target, transformation):
     '''
     source & target: np.ndarray
     '''        
+    import open3d as o3d
     source = copy.deepcopy(source)
     target = copy.deepcopy(target)    
     pcd1 = o3d.geometry.PointCloud()
@@ -131,6 +134,7 @@ def draw_registration_result(source, target, transformation):
 # fast_gicp (https://github.com/SMRT-AIST/fast_gicp)
 def fast_gicp(source, target, max_correspondence_distance=1.0, init_pose=np.eye(4)):
     # downsample the point cloud before registration
+    import pygicp
     source = pygicp.downsample(source, 0.25)
     target = pygicp.downsample(target, 0.25)
 
@@ -158,6 +162,7 @@ def fast_gicp(source, target, max_correspondence_distance=1.0, init_pose=np.eye(
 def o3d_icp(source, target, transform: np.ndarray = None, point2plane: bool = False,
         inlier_dist_threshold: float = 1.0, max_iteration: int = 200):
     # transform: initial alignment transform
+    import open3d as o3d
     if transform is not None:
         transform = transform.astype(float)
 

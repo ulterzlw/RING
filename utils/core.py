@@ -7,7 +7,6 @@ import torch
 import voxelocc
 import voxelfeat
 import numpy as np
-import open3d as o3d
 import utils.config as cfg
 from utils.tools import imshow
 import utils.vox_utils.vox as vox

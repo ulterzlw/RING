@@ -7,7 +7,6 @@ import errno
 import torch
 import pickle
 import numpy as np
-import open3d as o3d
 import utils.config as cfg
 import matplotlib.pyplot as plt
 from scipy.spatial import distance_matrix
